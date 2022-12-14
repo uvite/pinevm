@@ -1,0 +1,10 @@
+[workspace]
+
+members = [
+    "pine",
+    "pine-doc",
+    "pine-ws",
+    "pine-py",
+    "pine-ls",
+    "genv",
+]

@@ -1,0 +1,31 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "LLDB Launch",
+            "program": "${workspaceFolder}/target/debug/data_src_tests-768db31d74545ae3.exe",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "expressions": "native",
+            "env": {
+                "PATH": "/C/Users/lx/Anaconda3:${env:PATH}"
+            }
+        },
+        {
+            "name": "(Windows) Launch",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/target/debug/deps/data_src_tests-768db31d74545ae3.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false
+        }
+    ]
+}

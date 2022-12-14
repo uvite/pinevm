@@ -1,0 +1,8 @@
+/target
+**/*.rs.bk
+Cargo.lock
+*.pyd
+.idea
+output/
+node_modules
+pine/target

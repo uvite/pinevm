@@ -1,0 +1,31 @@
+{
+  "name": "u8pine",
+  "scripts": {
+    "clean": "rimraf pkg",
+    "test": "wasm-pack test --node",
+    "node-test": "mocha tests/*.js",
+    "js-test": "node tests/test.js",
+    "build-node": "wasm-pack build --target nodejs --out-dir pkg/node --out-name pine",
+    "build-bundler": "wasm-pack build --target web --out-dir pkg/web --out-name pine",
+    "cp": "node scripts/change",
+    "build": "npm run clean   && npm run build-node && npm run build-bundler && npm run cp  ",
+    "build1": "npm run clean && npm run test && npm run build-node && npm run build-bundler && npm run cp && npm run node-test"
+  },
+  "collaborators": [
+    "airwms <airwms@126.com>"
+  ],
+  "version": "0.39.0",
+  "files": [
+    "web/",
+    "node/"
+  ],
+  "main": "node/pine.js",
+  "module": "web/pine.js",
+  "types": "web/pine.d.ts",
+  "sideEffects": false,
+  "devDependencies": {
+    "fs-extra": "^8.1.0",
+    "mocha": "^7.1.1",
+    "rimraf": "^3.0.2"
+  }
+}

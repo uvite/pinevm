@@ -636,7 +636,7 @@ fn assign_run<'a>(
 ) -> Result<PineRef<'a>, PineRuntimeError> {
     // let result = fun_call.method.run_for_func(context)?;
 
-    println!("Function method type {:?}", method.get_type());
+    //println!("Function method type {:?}", method.get_type());
     let result = match method.get_type() {
         (FirstType::Callable, SecondType::Simple) => {
             let mut callable = downcast_pf::<Callable>(method).unwrap();

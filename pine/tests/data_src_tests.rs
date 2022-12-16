@@ -1904,6 +1904,7 @@ fn myplot2_test() {
     for m in 0..400 {
         openes.push(Some(100f64 + m as f64));
     }
+
     let data = vec![
         ("close", AnySeries::from_float_vec(closes)),
         ("open", AnySeries::from_float_vec(openes)),

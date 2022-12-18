@@ -7,4 +7,5 @@ members = [
     "pine-py",
     "pine-ls",
     "genv",
+    "app",
 ]

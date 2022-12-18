@@ -36,24 +36,55 @@ pub fn series_ema<'a>(
     Ok(val)
 }
 
+
+//
+// fn new(length: Self::Params, &value: &Self::Input) -> Result<Self, Error> {
+//     match length {
+//         0 => Err(Error::WrongMethodParameters),
+//         length => {
+//             let alpha = 2. / ((length + 1) as ValueType);
+//             Ok(Self { alpha, value })
+//         }
+//     }
+// }
+//
+// #[inline]
+// fn next(&mut self, value: &Self::Input) -> Self::Output {
+//     self.value = (value - self.value).mul_add(self.alpha, self.value);
+//
+//     self.value
+// }
 pub fn ema_func<'a>(source: Float, length: i64, prev_val: Float) -> Result<Float, RuntimeErr> {
-    let mut sum = 0f64;
+    let mut sum=0f64;
     let alpha = 2f64 / (length + 1) as f64;
+    match prev_val{
+        Some(val)=>{
+
+        }
+        None=>{
+            return Ok(source)
+        }
+    }
     match source {
         Some(val) => {
+            //println!("{}----{}",val,prev_val.unwrap_or(0f64));
             sum = alpha * val + (1f64 - alpha) * prev_val.unwrap_or(0f64);
+
+          //  sum:= na(sum[1]) ? src : alpha * src + (1 - alpha) * nz(sum[1])
+
         }
         None => {
             return Ok(None);
         }
     }
+    println!("{}----",sum);
     Ok(Some(sum))
 }
 
 pub fn rma_func<'a>(source: Float, length: i64, prev_val: Float) -> Result<Float, RuntimeErr> {
     let mut sum = 0f64;
     let alpha = length as f64;
-    println!("with rma {:?} {:?} {:?}", source, prev_val, length);
+    //println!("with rma {:?} {:?} {:?}", source, prev_val, length);
     match source {
         Some(val) => {
             sum = val + (alpha - 1f64) * prev_val.unwrap_or(0f64);

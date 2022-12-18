@@ -22,7 +22,7 @@ use std::fmt;
 use std::mem;
 use std::ops::Deref;
 use std::rc::Rc;
-use crate::libs::{pow};
+use crate::libs::{abs, pow};
 
 
 struct PlotProps;
@@ -38,6 +38,7 @@ impl<'a> PineClass<'a> for PlotProps {
             //     Callable::new(None, Some(Box::new(LineFromNaVal::new())))
             // }))),
             "pow" => Ok(pow::declare_var().value),
+            "abs" => Ok(abs::declare_var().value),
 
 
             _ => Err(RuntimeErr::NotImplement(str_replace(
@@ -69,6 +70,10 @@ pub fn declare_var<'a>() -> VarResult<'a> {
     obj_type.insert(
         "pow",
         pow::declare_var().syntax_type,
+    );
+    obj_type.insert(
+        "abs",
+        abs::declare_var().syntax_type,
     );
 
 

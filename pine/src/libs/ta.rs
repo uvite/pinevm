@@ -22,7 +22,7 @@ use std::fmt;
 use std::mem;
 use std::ops::Deref;
 use std::rc::Rc;
-use crate::libs::{alma, atr, bb, ema, hma, rsi, sma, tr};
+use crate::libs::{alma, atr, bb, change, ema, hma, rsi, sma, tr};
 
 
 struct PlotProps;
@@ -50,6 +50,7 @@ impl<'a> PineClass<'a> for PlotProps {
             "rma" => Ok(ema::declare_rma_var().value),
             "bb" => Ok(bb::declare_var().value),
             "atr" => Ok(atr::declare_var().value),
+            "change" => Ok(change::declare_change_var().value),
 
             _ => Err(RuntimeErr::NotImplement(str_replace(
                 NO_FIELD_IN_OBJECT,
@@ -133,6 +134,9 @@ pub fn declare_var<'a>() -> VarResult<'a> {
 obj_type.insert(
         "atr",
         atr::declare_var().syntax_type,
+    );obj_type.insert(
+        "change",
+        change::declare_change_var().syntax_type,
     );
 
 

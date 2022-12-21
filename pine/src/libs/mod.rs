@@ -57,6 +57,7 @@ pub mod size;
 pub mod sma;
 pub mod stoch;
 pub mod study;
+pub mod indicator;
 pub mod sum;
 pub mod swma;
 pub mod syminfo;
@@ -72,6 +73,7 @@ pub mod year;
 pub mod yloc;
 pub mod ta;
 pub mod math;
+
 
 
 use crate::ast::syntax_type::SyntaxType;
@@ -113,17 +115,18 @@ fn check_names<'a>(vars: &Vec<VarResult<'a>>) -> Vec<&'static str> {
 pub fn declare_vars<'a>() -> Vec<VarResult<'a>> {
     let list = vec![
         plot::declare_var(),
-        // print::declare_var(),
+        print::declare_var(),
         input::declare_var(),
-        // plotarrow::declare_var(),
-        // plotbar::declare_var(),
-        // plotcandle::declare_var(),
-        // plotchar::declare_var(),
-        // plotshape::declare_var(),
+        plotarrow::declare_var(),
+        plotbar::declare_var(),
+        plotcandle::declare_var(),
+        plotchar::declare_var(),
+        plotshape::declare_var(),
         color::declare_var(),
         study::declare_var(),
-        // syminfo::declare_var(),
-        // barstate::declare_var(),
+        indicator::declare_var(),
+        syminfo::declare_var(),
+        barstate::declare_var(),
         accdist::declare_var(),
         time::declare_var(),
         timenow::declare_var(),
@@ -202,12 +205,12 @@ pub fn declare_vars<'a>() -> Vec<VarResult<'a>> {
         hline::declare_var(),
         tsi::declare_var(),
         stoch::declare_var(),
-        // line::declare_var(),
-        // label::declare_var(),
-        // xloc::declare_var(),
-        // yloc::declare_var(),
-        // size::declare_var(),
-        // text::declare_var(),
+        line::declare_var(),
+        label::declare_var(),
+        xloc::declare_var(),
+        yloc::declare_var(),
+        size::declare_var(),
+        text::declare_var(),
         ta::declare_var(),
         math::declare_var(),
         display::declare_var(),

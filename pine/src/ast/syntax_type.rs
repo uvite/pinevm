@@ -212,3 +212,6 @@ impl<'a> SyntaxType<'a> {
         SyntaxType::Series(SimpleSyntaxType::String)
     }
 }
+// fn ok(){
+//     SyntaxType::Simple(SimpleSyntaxType::from).
+// }

@@ -1,0 +1,308 @@
+{
+  "success": true,
+  "result": {
+    "IL": "IhPdhEqV77Hpw5gW6A9UmA==_FSBuMyhJfZjuX6o+NwHhHP2CWqxoUDmNeyEKjVjcNCGfdkJu+oazB64VNM0vi+xv5udbXpMhRom0QXmcpJ/FAOFODH1djjkbkgL8Z9gFJA9pJou/knwa1r0q5S5o2cm/vidhCHhx/GGJteC8zR0fp+j1WzcIshFWOTA7GVLHqmneOKKOBQb4g1tDirKt2bJb3H1cXJPVAYH0mXi6Zlq1b12Kljy/CQQgTUbi/vMDhuLD7tTpmu3yPIWF02uV6JQ6zDWBBmoAu5w0HazHn/pJftVijZYi/p101id2n7GWIZo+CpqERkPlYR3dB/muQ7g4zxN33/2m3BkWYWxbVH5W69aam7fFb8TBLluuHE6p+G2juPICjJ2I7rfN8wm33BbLwftOEOdy7zpb82UA3pFarZ66o/XUomgDjYqI7hs/Lf3EHCtrtcpC9y/YixnonK9rupe/WUne+EVPFQdtNT9EjtWuFAzTfJ4W6aKjFCOW3uE4QkjEuvsuYlFEPjnP5N19IBj8vooNvshIpuIexa9+plMPPPcRvhaDgXHG8j6Cjm6AZCP8mDrGEhW8etG5hherI29VcxlBMMb8WVbopa2u8ZhJofecsFjbgr9L7LP8AVCoqFMbOP0E/hWB/Y8vC3o2esDFZ0jyV70xleRdmSkzssrcz6GI/WU/SK5AR+T3kEhF9uHln5exBavgs2R2Z60Uq4MeAFlQXV/2uR/ECICNygbQ9ihYJCHQOu2EtVJvEa2Pu1brS6F13blDgQd9TzO2gV9L5i3mF3Pe82hDHMavuSEMoOf1oYOiutXWqiEBq5UjW5aZEoziVbz092sCmuR9Fkpn8zArJ8/WPw+XGR6DWa+b0qSomznyVoMnOzbJvl8ZoR2XMcQ2wzd/xjvH0B+G/Z7cU6UoWC2/tTRlp0J7vf470IUwSMCsN0vF6BAB3ZgsDk2SdY21q6r4nuIEShPrGlBV/NmCFlLyfR5atQeFpAvR/UkqThM76/RzAAxnfK3fH7nDrNW61McarzArWq0tltk=",
+    "ilTemplate": "RcdvrN6+bvLtVboMZ/J8bg==_mYL3Jf28PgzQ6JuFb8VFhp5hrJrxXIpW3MXUSauZ1UNkAYKlrgCr3O1uoJpSNAVWePMt4YBJhRzNqn3eleH2OoaYKM23z5l47Y5h615vAgh6vtCRL909+QTzLr0GZel+VcA1RiA0cJOQPWmVGn1armb5hN9wf5vNRr+9F5eW8+hjIJ5awUYjJlpWngjcPnz++7ChqgSH4Ni3/ZH152x9jG9/Wy14MyFq4NbVKEmxe573wNtAeXbGJqrg2KXFE4NWX+76AWTe/e93VZdF9ur04EQqUA3669hZJcd+q9Liy20bLzoKbpPrwo0yuGGP6N7T7nkOx7xp82xHYFu4J8ZjDL1r/hBgydACkjS0dASg7N8Bg4aXK7BA2nW1a5TMGw/M4K17o0+kGD8VC9NWCfAvgxp+ifQr8q46krOlWrWNO+Ad0LmC3QOx1wXm2/MHqqVxDm4BIjVorcs2CHWTx6ZbnVnlBcuAfWbTquhU+78xvwtTmrADjiDFq5IK5H7QTOiEbGu4tRjaQ4VMRYdQiyBNLgLtx/JEIIgtopZZd+LUlbyO2pmZX6RV5oYIsY/GURH2PldbGUkprhS0E1L+cU7DTvjif5W4pguO5uM61xejw/Y3U/MIBIhlvM6tAo3SvXR6rJWzSKOZ6UKCnbxcf5ksgAKirks0qVaXQeDySbjq0w9I2kT2/WekBXnOSVq66cv+cyZIcjkYM1nEEV+paQe21tMSM53NTCIlFaY9N15jOMhD6uNFKjC3t4UNfcXaiVhwok8AVwgI4i+bhc740pV9cvQc9E95FDrhNXJdav2zL2AggJ2v/6f9ZF+dcvDzLkabTdUdVHGzZD5UMp5SuVY+H6UpMBakLqg0y6IQI2qUD4fpUszWHBE1ULGKBr8OlAMv2+zDbR+Pq+nIT7PQcqXjN7aqg+CtDpNFtyAOk1aqQhbda8RSaA9IaXSJ8Hm0zHF+9dZqOxKYQDyda6HkSEaLRmGOaRY3W4DxnGyWmN6eBnOLTYzos001zCjiAisjE7eSgIc=",
+    "metaInfo": {
+      "_metainfoVersion": 52,
+      "defaults": {
+        "inputs": {
+          "in_0": 7,
+          "in_1": "close",
+          "in_2": true,
+          "in_3": 3,
+          "in_4": false,
+          "pineId": "",
+          "pineVersion": "",
+          "text": "RcdvrN6+bvLtVboMZ/J8bg==_mYL3Jf28PgzQ6JuFb8VFhp5hrJrxXIpW3MXUSauZ1UNkAYKlrgCr3O1uoJpSNAVWePMt4YBJhRzNqn3eleH2OoaYKM23z5l47Y5h615vAgh6vtCRL909+QTzLr0GZel+VcA1RiA0cJOQPWmVGn1armb5hN9wf5vNRr+9F5eW8+hjIJ5awUYjJlpWngjcPnz++7ChqgSH4Ni3/ZH152x9jG9/Wy14MyFq4NbVKEmxe573wNtAeXbGJqrg2KXFE4NWX+76AWTe/e93VZdF9ur04EQqUA3669hZJcd+q9Liy20bLzoKbpPrwo0yuGGP6N7T7nkOx7xp82xHYFu4J8ZjDL1r/hBgydACkjS0dASg7N8Bg4aXK7BA2nW1a5TMGw/M4K17o0+kGD8VC9NWCfAvgxp+ifQr8q46krOlWrWNO+Ad0LmC3QOx1wXm2/MHqqVxDm4BIjVorcs2CHWTx6ZbnVnlBcuAfWbTquhU+78xvwtTmrADjiDFq5IK5H7QTOiEbGu4tRjaQ4VMRYdQiyBNLgLtx/JEIIgtopZZd+LUlbyO2pmZX6RV5oYIsY/GURH2PldbGUkprhS0E1L+cU7DTvjif5W4pguO5uM61xejw/Y3U/MIBIhlvM6tAo3SvXR6rJWzSKOZ6UKCnbxcf5ksgAKirks0qVaXQeDySbjq0w9I2kT2/WekBXnOSVq66cv+cyZIcjkYM1nEEV+paQe21tMSM53NTCIlFaY9N15jOMhD6uNFKjC3t4UNfcXaiVhwok8AVwgI4i+bhc740pV9cvQc9E95FDrhNXJdav2zL2AggJ2v/6f9ZF+dcvDzLkabTdUdVHGzZD5UMp5SuVY+H6UpMBakLqg0y6IQI2qUD4fpUszWHBE1ULGKBr8OlAMv2+zDbR+Pq+nIT7PQcqXjN7aqg+CtDpNFtyAOk1aqQhbda8RSaA9IaXSJ8Hm0zHF+9dZqOxKYQDyda6HkSEaLRmGOaRY3W4DxnGyWmN6eBnOLTYzos001zCjiAisjE7eSgIc="
+        },
+        "palettes": {
+          "palette_0": {
+            "colors": {
+              "0": {
+                "color": "#FFFFFF",
+                "style": 0,
+                "width": 4
+              },
+              "1": {
+                "color": "#00E676",
+                "style": 0,
+                "width": 4
+              },
+              "2": {
+                "color": "#00897B",
+                "style": 0,
+                "width": 4
+              },
+              "3": {
+                "color": "#880E4F",
+                "style": 0,
+                "width": 4
+              },
+              "4": {
+                "color": "#FF5252",
+                "style": 0,
+                "width": 4
+              }
+            }
+          },
+          "palette_1": {
+            "colors": {
+              "0": {
+                "color": "#FFFFFF",
+                "style": 0,
+                "width": 1
+              },
+              "1": {
+                "color": "#00E676",
+                "style": 0,
+                "width": 1
+              },
+              "2": {
+                "color": "#00897B",
+                "style": 0,
+                "width": 1
+              },
+              "3": {
+                "color": "#880E4F",
+                "style": 0,
+                "width": 1
+              },
+              "4": {
+                "color": "#FF5252",
+                "style": 0,
+                "width": 1
+              }
+            }
+          }
+        },
+        "styles": {
+          "plot_0": {
+            "color": "#FF9800",
+            "linestyle": 0,
+            "linewidth": 1,
+            "plottype": 0,
+            "trackPrice": false,
+            "transparency": 55,
+            "visible": true
+          },
+          "plot_1": {
+            "color": "#2196F3",
+            "linestyle": 0,
+            "linewidth": 1,
+            "plottype": 0,
+            "trackPrice": false,
+            "transparency": 65,
+            "visible": true
+          },
+          "plot_2": {
+            "color": "#2196F3",
+            "linestyle": 0,
+            "linewidth": 4,
+            "plottype": 5,
+            "trackPrice": false,
+            "transparency": 0,
+            "visible": true
+          }
+        }
+      },
+      "description": "High Low Rate Of Change",
+      "format": {
+        "precision": 3,
+        "type": "price"
+      },
+      "id": "Script$USER;9dd56b7594e3434d9ab28be8a8efd1c8@tv-scripting-101",
+      "inputs": [
+        {
+          "defval": "RcdvrN6+bvLtVboMZ/J8bg==_mYL3Jf28PgzQ6JuFb8VFhp5hrJrxXIpW3MXUSauZ1UNkAYKlrgCr3O1uoJpSNAVWePMt4YBJhRzNqn3eleH2OoaYKM23z5l47Y5h615vAgh6vtCRL909+QTzLr0GZel+VcA1RiA0cJOQPWmVGn1armb5hN9wf5vNRr+9F5eW8+hjIJ5awUYjJlpWngjcPnz++7ChqgSH4Ni3/ZH152x9jG9/Wy14MyFq4NbVKEmxe573wNtAeXbGJqrg2KXFE4NWX+76AWTe/e93VZdF9ur04EQqUA3669hZJcd+q9Liy20bLzoKbpPrwo0yuGGP6N7T7nkOx7xp82xHYFu4J8ZjDL1r/hBgydACkjS0dASg7N8Bg4aXK7BA2nW1a5TMGw/M4K17o0+kGD8VC9NWCfAvgxp+ifQr8q46krOlWrWNO+Ad0LmC3QOx1wXm2/MHqqVxDm4BIjVorcs2CHWTx6ZbnVnlBcuAfWbTquhU+78xvwtTmrADjiDFq5IK5H7QTOiEbGu4tRjaQ4VMRYdQiyBNLgLtx/JEIIgtopZZd+LUlbyO2pmZX6RV5oYIsY/GURH2PldbGUkprhS0E1L+cU7DTvjif5W4pguO5uM61xejw/Y3U/MIBIhlvM6tAo3SvXR6rJWzSKOZ6UKCnbxcf5ksgAKirks0qVaXQeDySbjq0w9I2kT2/WekBXnOSVq66cv+cyZIcjkYM1nEEV+paQe21tMSM53NTCIlFaY9N15jOMhD6uNFKjC3t4UNfcXaiVhwok8AVwgI4i+bhc740pV9cvQc9E95FDrhNXJdav2zL2AggJ2v/6f9ZF+dcvDzLkabTdUdVHGzZD5UMp5SuVY+H6UpMBakLqg0y6IQI2qUD4fpUszWHBE1ULGKBr8OlAMv2+zDbR+Pq+nIT7PQcqXjN7aqg+CtDpNFtyAOk1aqQhbda8RSaA9IaXSJ8Hm0zHF+9dZqOxKYQDyda6HkSEaLRmGOaRY3W4DxnGyWmN6eBnOLTYzos001zCjiAisjE7eSgIc=",
+          "id": "text",
+          "isHidden": true,
+          "name": "ILScript",
+          "type": "text"
+        },
+        {
+          "defval": "",
+          "id": "pineId",
+          "isHidden": true,
+          "name": "pineId",
+          "type": "text"
+        },
+        {
+          "defval": "",
+          "id": "pineVersion",
+          "isHidden": true,
+          "name": "pineVersion",
+          "type": "text"
+        },
+        {
+          "defval": 7,
+          "id": "in_0",
+          "isFake": true,
+          "max": 1000000000000,
+          "min": -1000000000000,
+          "name": "Look back",
+          "type": "integer"
+        },
+        {
+          "defval": "close",
+          "id": "in_1",
+          "isFake": true,
+          "name": "Source",
+          "options": [
+            "open",
+            "high",
+            "low",
+            "close",
+            "hl2",
+            "hlc3",
+            "ohlc4"
+          ],
+          "type": "source"
+        },
+        {
+          "defval": true,
+          "id": "in_2",
+          "isFake": true,
+          "name": "EMA smoothing",
+          "type": "bool"
+        },
+        {
+          "defval": 3,
+          "id": "in_3",
+          "isFake": true,
+          "max": 1000000000000,
+          "min": -1000000000000,
+          "name": "EMA Length",
+          "type": "integer"
+        },
+        {
+          "defval": false,
+          "id": "in_4",
+          "isFake": true,
+          "name": "Color bars",
+          "type": "bool"
+        }
+      ],
+      "isTVScript": true,
+      "isTVScriptStub": false,
+      "is_hidden_study": false,
+      "is_price_study": false,
+      "palettes": {
+        "palette_0": {
+          "addDefaultColor": true,
+          "colors": {
+            "0": {
+              "name": "Color 0"
+            },
+            "1": {
+              "name": "Color 1"
+            },
+            "2": {
+              "name": "Color 2"
+            },
+            "3": {
+              "name": "Color 3"
+            },
+            "4": {
+              "name": "Color 4"
+            }
+          },
+          "valToIndex": {
+            "0": 0,
+            "1": 1,
+            "2": 2,
+            "3": 3,
+            "4": 4
+          }
+        },
+        "palette_1": {
+          "addDefaultColor": true,
+          "colors": {
+            "0": {
+              "name": "Color 0"
+            },
+            "1": {
+              "name": "Color 1"
+            },
+            "2": {
+              "name": "Color 2"
+            },
+            "3": {
+              "name": "Color 3"
+            },
+            "4": {
+              "name": "Color 4"
+            }
+          },
+          "valToIndex": {
+            "0": 0,
+            "1": 1,
+            "2": 2,
+            "3": 3,
+            "4": 4
+          }
+        }
+      },
+      "pine": {
+        "digest": "89d1ba855bb4d34e079f39107670fdee23bd5ffc",
+        "version": "2.0"
+      },
+      "plots": [
+        {
+          "id": "plot_0",
+          "type": "line"
+        },
+        {
+          "id": "plot_1",
+          "type": "line"
+        },
+        {
+          "id": "plot_2",
+          "type": "line"
+        },
+        {
+          "id": "plot_3",
+          "palette": "palette_0",
+          "target": "plot_2",
+          "type": "colorer"
+        },
+        {
+          "id": "plot_4",
+          "palette": "palette_1",
+          "type": "bar_colorer"
+        }
+      ],
+      "scriptIdPart": "USER;9dd56b7594e3434d9ab28be8a8efd1c8",
+      "shortDescription": "H/L Rate of Change",
+      "styles": {
+        "plot_0": {
+          "histogramBase": 0,
+          "isHidden": false,
+          "joinPoints": false,
+          "title": "Plot"
+        },
+        "plot_1": {
+          "histogramBase": 0,
+          "isHidden": false,
+          "joinPoints": false,
+          "title": "Plot"
+        },
+        "plot_2": {
+          "histogramBase": 0,
+          "isHidden": false,
+          "joinPoints": false,
+          "title": "Plot"
+        },
+        "plot_4": {
+          "isHidden": false,
+          "title": "Bar Color"
+        }
+      },
+      "usesPrivateLib": false,
+      "warnings": [
+        "line 43: The `transp` argument will be deprecated soon. We recommend using color.new() or color.rgb() functions to specify the transparency of the plots instead.",
+        "line 53: The `transp` argument will be deprecated soon. We recommend using color.new() or color.rgb() functions to specify the transparency of the plots instead."
+      ]
+    }
+  }
+}

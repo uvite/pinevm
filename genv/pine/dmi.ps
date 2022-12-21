@@ -1,0 +1,23 @@
+
+study(title="MACD", shorttitle="MACD")
+//@version=5
+indicator(title="DMI + ADX with EMA", shorttitle="DAMA",  precision=4, timeframe=" ", timeframe_gaps=true)
+lensig = input.int(14, title="ADX Smoothing")
+
+len = input(14, minval=1, title="DI Length")
+
+up = ta.change(high)
+down = -ta.change(low)
+plusDM = na(up) ? na : (up > down and up > 0 ? up : 0)
+minusDM = na(down) ? na : (down > up and down > 0 ? down : 0)
+trur = ta.rma(tr, len)
+plus = fixnan(100 * ta.rma(plusDM, len) / trur)
+minus = fixnan(100 * ta.rma(minusDM, len) / trur)
+sum = plus + minus
+adx = 100 * ta.rma(math.abs(plus - minus) / (sum == 0 ? 1 : sum), lensig)
+// plot(adx, color=#F50057, title="ADX")
+// p1=plot(plus, color=#2962FF, title="+DI")
+// p2=plot(minus, color=#FF6D00, title="-DI")
+// hline(20, linestyle=hline.style_solid, color=color.lime )
+EmaADX = ta.ema(adx, 16)
+plot(EmaADX)

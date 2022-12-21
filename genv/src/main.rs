@@ -1,19 +1,51 @@
 mod binance;
 mod models;
-mod vm;
 mod statistics;
 #[cfg(test)]
 mod test_statistics;
 mod utils;
+mod vm;
+use std::{env, fs::File, io::Read};
+
+use num_traits::ToPrimitive;
+use yata::core::PeriodType;
+
+use pine::runtime::InputVal;
+use yata::methods::SMA;
 use yata::prelude::*;
-use yata::methods::EMA;
+
+use ta::indicators::ExponentialMovingAverage as Ema;
+use ta::DataItem;
+use ta::Next;
 extern crate csv;
 
+fn ema1(len: i64) {
+    let mut reader = csv::Reader::from_path("./output.csv").unwrap();
+    let l = len as usize;
+    let mut ema = Ema::new(l).unwrap();
 
+    for record in reader.deserialize() {
+        let (open_time, open, high, low, close, volume): (String, f64, f64, f64, f64, f64) =
+            record.unwrap();
+
+        let dt = DataItem::builder()
+            .open(open)
+            .high(high)
+            .low(low)
+            .close(close)
+            .volume(volume)
+            .build()
+            .unwrap();
+        let ema_val = ema.next(&dt);
+        println!("{} = {:2.2}", ema, ema_val);
+    }
+}
 #[tokio::main]
 async fn main() {
+    let length = 88;
+    // ema1(length);
     // let client = utils::get_client();
-    // let result = binance::get_klines(client.clone(), "1d", "BTCUSDT", 500).await;
+    // let result = binance::get_klines(client.clone(), "30m", "ETHUSDT", 500).await;
     //
     // let kline_data = match result {
     //     Some(kline_data) => kline_data,
@@ -24,8 +56,6 @@ async fn main() {
     // println!("first result: {:?}", kline_data[0]);
     //
     // let price_data: Vec<f64> = kline_data.iter().rev().take(100).map(|f| f.close).collect();
-
-
 
     let mut reader = csv::Reader::from_path("./output.csv").unwrap();
     // Date,Open,High,Low,Close,Volume
@@ -38,124 +68,55 @@ async fn main() {
         let (open_time, open, high, low, close, volume): (String, f64, f64, f64, f64, f64) =
             record.unwrap();
 
+        // println!("{} ", close);
         closes.push(Some(close));
         highs.push(Some(high));
         lows.push(Some(low));
-        println!("h{},l{},c{} ", high,low,close);
-
-    }
-    let a=closes[0];
-    // it can return an error, when an invalid length is passed (e.g. 0)
-    //let mut ema = ExponentialMovingAverage::new(26).unwrap();
-    let mut ema = EMA::new(26, &a.unwrap()).unwrap();
-
-    // assert_eq!(ema.next(2.0), 2.0);
-     closes.drain(0..=0);
-    for i in closes {
-        println!("{}", ema.next(&i.unwrap()));
     }
 
+    let mut fake: Vec<Option<f64>> = vec![];
+
+    // These are all done without reallocating...
+    //     for i in 0..100 {
+    //         println!("{}",i);
+    //         fake.push(i.to_f64());
+    //     }
+
+    let mut f = File::open("./pine/test.ps").unwrap();
+    let mut buffer = String::new();
+    f.read_to_string(&mut buffer).unwrap();
+   // println!("SMA: {:?}", buffer);
+
+
+    let out_data = vm::runcode(buffer, vec![Some(InputVal::Int(length))], &closes,&highs,&lows);
+    println!("SMA: {:?}", out_data);
+    //println!("sma data {:?}", out_data.as_ref().unwrap().data_list);
     //
-    // for i in price_data {
-    //     closes.push(Some(i))
+   // let out = &out_data.as_ref().unwrap().data_list[0];
+   //  println!("{:?}", out_data);
+   //  let mut pd = vec![];
+   //  for k in out {
+   //      for val in &k.series[0] {
+   //          match val {
+   //              Some(val) => {
+   //                  pd.push(val);
+   //                  println!("{}", val);
+   //              }
+   //              None => pd.push(&0f64),
+   //          }
+   //      }
+   //  }
+    // // // //
+    // let a=closes[0];
+    // // // it can return an error, when an invalid length is passed (e.g. 0)
+    // //let mut ema = ExponentialMovingAverage::new(26).unwrap();
+    // let mut ema = SMA::new(length as PeriodType, &a.unwrap()).unwrap();
+    //
+    // // assert_eq!(ema.next(2.0), 2.0);
+    //  closes.drain(0..=0);
+    // let mut jj=1;
+    // for i in closes {
+    //     println!("ema:{}--ta.ema:{},id:{},close:{}", ema.next(&i.unwrap()),pd[jj],jj,&i.unwrap());
+    //     jj=jj+1;
     // }
-    // let closedata=VecOption::from(price_data);
-
-
-
-
-    const MACD_SCRIPT: &str = r#"
-//@version=4
-study(title="MACD", shorttitle="MACD")
-
-// Getting inputs
-fast_length = input(title="Fast Length", type=input.integer, defval=12)
-slow_length = input(title="Slow Length", type=input.integer, defval=26)
-src = input(title="Source", type=input.source, defval=close)
-signal_length = input(title="Signal Smoothing", type=input.integer, minval = 1, maxval = 50, defval = 9)
-sma_source = input(title="Simple MA(Oscillator)", type=input.bool, defval=false)
-sma_signal = input(title="Simple MA(Signal Line)", type=input.bool, defval=false)
-
-// Plot colors
-col_grow_above = #26A69A
-col_grow_below = #FFCDD2
-col_fall_above = #B2DFDB
-col_fall_below = #EF5350
-col_macd = #0094ff
-col_signal = #ff6a00
-pine_ema(src, length) =>
-    alpha = 2.0 / (length + 1)
-    sum = 0.0
-    sum := na(sum[1]) ? src : alpha * src + (1 - alpha) * nz(sum[1])
-// Calculating
-fast_ma = ta.ema(close, 12)
-slow_ma = pine_ema(close, 120)
-mymacd = fast_ma - slow_ma
-signal = sma_signal ? sma(mymacd, signal_length) : ema(mymacd, signal_length)
-hist = mymacd - signal
-//plot(mymacd, title="MACD", color=col_macd, opacity=0)
-
-plot(slow_ma )
-//plot(fast_ma, title="Signal", color=col_signal, opacity=0)
-"#;
-    // println!("SMA: {:?}", closes);
-    //let out_data=vm::runcode(MACD_SCRIPT,&closes,&highs,&lows);
-    //  println!("SMA: {:?}", rs);
-   // println!("sma data {:?}", out_data.as_ref().unwrap().data_list[0]);
-   // println!("sma data {:?}", out_data.as_ref().unwrap().data_list[1]);
-   // println!("sma data {:?}", out_data.as_ref().unwrap().data_list[2]);
-   // println!("sma data {:?}", out_data.as_ref().unwrap().data_list);
-    // println!("Out data {:?}", out_data.as_ref().unwrap().data_list[1]);
-
-    //
-    // let result = statistics::simple_moving_average(&price_data, 26);
-    //
-    // let sma_data = match result {
-    //     Some(data) => data,
-    //     _ => panic!("Calculating SMA failed"),
-    // };
-    //
-    // println!("SMA: {:?}", sma_data);
-    //
-    // let result = statistics::exponential_moving_average(&price_data, 26);
-    //
-    // let ema_data = match result {
-    //     Some(data) => data,
-    //     _ => panic!("Calculating EMA failed"),
-    // };
-    //
-    // println!("EMA: {:?}", ema_data);
-    //
-    // let result = statistics::moving_average_convergence_divergence(&price_data, 12, 26, 9);
-    //
-    // let macd_data = match result {
-    //     Some(data) => data,
-    //     _ => panic!("Calculating MACD failed"),
-    // };
-    //
-    // println!("MACD: {:?}", macd_data);
-    //
-    // let typical_price_data: Vec<f64> = kline_data
-    //     .iter()
-    //     .rev()
-    //     .take(100)
-    //     .map(|f| (f.high + f.low + f.close) / 3.0)
-    //     .collect();
-    // let result = statistics::bollinger_bands(&typical_price_data, 20, 2.0);
-    //
-    // let boll_data = match result {
-    //     Some(data) => data,
-    //     _ => panic!("Calculating BOLL failed"),
-    // };
-    //
-    // println!("BOLL: {:?}", boll_data);
-    //
-    // let result = statistics::relative_strength_index(&price_data, 14);
-    //
-    // let rsi_data = match result {
-    //     Some(data) => data,
-    //     _ => panic!("Calculating RSI failed"),
-    // };
-    //
-    // println!("RSI: {:?}", rsi_data);
 }

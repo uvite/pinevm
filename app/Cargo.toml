@@ -12,7 +12,7 @@ hyper = "0.14"
 axum = { version="0.5.16", features = ["headers"] }
 tower-http = { version = "0.3", features = ["full"] }
 axum-sessions = "0.3"
-
+rhai = "*"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 uuid = { version = "1.1", features = ["v4", "serde"] }

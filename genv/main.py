@@ -2,7 +2,7 @@ import csv
 from binance.client import Client, HistoricalKlinesType
 
 
-SYMBOL = 'BTCUSDT'
+SYMBOL = 'ETHUSDT'
 
 # No API key/secret needed for this type of call
 client = Client()
@@ -14,7 +14,7 @@ columns = [
     'ignore'
 ]
 
-klines = client.get_historical_klines(SYMBOL, Client.KLINE_INTERVAL_1DAY, "1 Oct, 2022",klines_type=HistoricalKlinesType.FUTURES)
+klines = client.get_historical_klines(SYMBOL, Client.KLINE_INTERVAL_1HOUR, "1 Dec, 2022",klines_type=HistoricalKlinesType.FUTURES)
 
 with open('output.csv', 'w') as f:
     write = csv.writer(f)

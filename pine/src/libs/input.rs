@@ -289,7 +289,21 @@ fn input_for_int<'a>(
         },
     }
 }
-
+// fn set_float_func<'a>(
+//     _context: &mut dyn Ctx<'a>,
+//     mut param: Vec<Option<PineRef<'a>>>,
+//     mut func: impl FnMut(&mut PerLabel, Option<PineRef<'a>>) -> Result<(), RuntimeErr>,
+// ) -> Result<PineRef<'a>, RuntimeErr> {
+//     let id = mem::replace(&mut param[0], None);
+//     let val = mem::replace(&mut param[1], None);
+//     let label = pine_ref_to_label(id);
+//
+//     if label.borrow_mut().is_none() {
+//         *label.borrow_mut() = Some(PerLabel::new());
+//     }
+//     func(label.borrow_mut().as_mut().unwrap(), val);
+//     Ok(PineRef::new(NA))
+// }
 fn input_for_float<'a>(
     context: &mut dyn Ctx<'a>,
     mut param: Vec<Option<PineRef<'a>>>,
@@ -431,14 +445,20 @@ impl<'a> PineClass<'a> for InputProps {
 
     fn get(&self, _ctx: &mut dyn Ctx<'a>, name: &str) -> Result<PineRef<'a>, RuntimeErr> {
         match name {
-            "bool" => Ok(PineRef::new_rc(String::from(BOOL_TYPE_STR))),
-            "float" => Ok(PineRef::new_rc(String::from(FLOAT_TYPE_STR))),
+           "bool" => Ok(PineRef::new(Callable::new(Some(pine_input), None))),
+           "float" => Ok(PineRef::new(Callable::new(Some(pine_input), None))),
+           "int" => Ok(PineRef::new(Callable::new(Some(pine_input), None))),
+           "string" => Ok(PineRef::new(Callable::new(Some(pine_input), None))),
+
+           // "bool" => Ok(PineRef::new_rc(String::from(BOOL_TYPE_STR))),
+           // "float" => Ok(PineRef::new_rc(String::from(FLOAT_TYPE_STR))),
             "integer" => Ok(PineRef::new_rc(String::from(INT_TYPE_STR))),
             "resolution" => Ok(PineRef::new_rc(String::from(STRING_TYPE_STR))),
             "session" => Ok(PineRef::new_rc(String::from(STRING_TYPE_STR))),
             "source" => Ok(PineRef::new_rc(String::from(SOURCE_TYPE_STR))),
-            "string" => Ok(PineRef::new_rc(String::from(STRING_TYPE_STR))),
+            //"string" => Ok(PineRef::new_rc(String::from(STRING_TYPE_STR))),
             "symbol" => Ok(PineRef::new_rc(String::from(STRING_TYPE_STR))),
+
             _ => Err(RuntimeErr::NotImplement(str_replace(
                 NO_FIELD_IN_OBJECT,
                 vec![String::from(name), String::from("input")],
@@ -450,6 +470,8 @@ impl<'a> PineClass<'a> for InputProps {
         Box::new(InputProps)
     }
 }
+
+
 
 pub const VAR_NAME: &'static str = "input";
 
@@ -465,13 +487,39 @@ pub fn declare_var<'a>() -> VarResult<'a> {
         input(defval, title, type) → series[float]
     */
     let mut obj_type = BTreeMap::new();
-    obj_type.insert("bool", SyntaxType::string());
-    obj_type.insert("float", SyntaxType::string());
-    obj_type.insert("integer", SyntaxType::string());
+
+
+
+    obj_type.insert(
+        "int",
+        SyntaxType::Function(Rc::new(FunctionTypes(vec![
+            gen_int_type(),]))),
+    );
+    obj_type.insert(
+        "float",
+        SyntaxType::Function(Rc::new(FunctionTypes(vec![
+            gen_float_type(),]))),
+    );
+    obj_type.insert(
+        "bool",
+        SyntaxType::Function(Rc::new(FunctionTypes(vec![
+            gen_bool_type()]))),
+    );
+
+    obj_type.insert(
+        "string",
+        SyntaxType::Function(Rc::new(FunctionTypes(vec![
+            gen_string_type(),]))),
+    );
+    // obj_type.insert("bool", SyntaxType::string());
+    // obj_type.insert("float", SyntaxType::string());
+    // obj_type.insert("int", SyntaxType::string());
+    // obj_type.insert("string", SyntaxType::string());
+
+
     obj_type.insert("resolution", SyntaxType::string());
     obj_type.insert("session", SyntaxType::string());
     obj_type.insert("source", SyntaxType::string());
-    obj_type.insert("string", SyntaxType::string());
     obj_type.insert("symbol", SyntaxType::string());
     let syntax_type = SyntaxType::ObjectFunction(
         Rc::new(obj_type),

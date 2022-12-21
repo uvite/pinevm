@@ -59,7 +59,7 @@ pub fn ema_func<'a>(source: Float, length: i64, prev_val: Float) -> Result<Float
     let alpha = 2f64 / (length + 1) as f64;
     match prev_val{
         Some(val)=>{
-
+             // Ok(prev_val)
         }
         None=>{
             return Ok(source)
@@ -67,7 +67,7 @@ pub fn ema_func<'a>(source: Float, length: i64, prev_val: Float) -> Result<Float
     }
     match source {
         Some(val) => {
-            //println!("{}----{}",val,prev_val.unwrap_or(0f64));
+           // println!("val:{} --prev_val-{}",val,prev_val.unwrap_or(0f64));
             sum = alpha * val + (1f64 - alpha) * prev_val.unwrap_or(0f64);
 
           //  sum:= na(sum[1]) ? src : alpha * src + (1 - alpha) * nz(sum[1])
@@ -77,7 +77,7 @@ pub fn ema_func<'a>(source: Float, length: i64, prev_val: Float) -> Result<Float
             return Ok(None);
         }
     }
-    println!("{}----",sum);
+    //println!("{}----",sum);
     Ok(Some(sum))
 }
 

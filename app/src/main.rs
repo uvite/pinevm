@@ -1,130 +1,191 @@
-
-extern crate pine;
-use pine::ast::syntax_type::{SimpleSyntaxType, SyntaxType};
-use pine::{LibInfo, PineParser, PineRunner};
-use pine::ast::stat_expr_types::VarIndex;
-use pine::libs::declare_vars;
-use pine::libs::ema::{declare_ema_var, declare_rma_var, series_ema};
-use pine::libs::plot;
-use pine::libs::print;
-use pine::runtime::data_src::{Callback, DataSrc, NoneCallback};
-use pine::runtime::{AnySeries, OutputDataCollect, PineFormatError};
-use pine::types::{PineRef, Series};
-
-mod vm;
-
-use yata::prelude::*;
-use yata::methods::EMA;
+use std::fmt::Debug;
+use std::mem;
+use pine::ast::error::PineErrorKind;
+//use pine::ast::stat_expr_types::{Assignment, Block, Exp, RVVarName, Statement, VarIndex};
+use pine::ast::syntax_type::{FunctionType, SimpleSyntaxType, SyntaxType};
+use pine::runtime::{AnySeries, AnySeriesType, Callback, Context, ContextType, Ctx, DataSrc, downcast_ctx, Runner, VarOperate};
+use pine::types::{Callable, downcast_pf, Float, PineFrom, PineRef, RefData, RuntimeErr, Series};
 
 
-extern crate csv;
 
-const MACD_SCRIPT: &str = r#"
-//@version=4
-study(title="MACD", shorttitle="MACD")
+use pine::ast::input::{Input, Position, StrRange};
+use pine::ast::name::VarName;
+use pine::ast::stat_expr::block;
+use pine::ast::state::{AstState, PineInputError};
+use pine::ast::stat_expr_types::*;
+use nom::Err;
 
-// Getting inputs
-fast_length = input(title="Fast Length", type=input.integer, defval=12)
-slow_length = input(title="Slow Length", type=input.integer, defval=26)
-src = input(title="Source", type=input.source, defval=close)
-signal_length = input(title="Signal Smoothing", type=input.integer, minval = 1, maxval = 50, defval = 9)
-sma_source = input(title="Simple MA(Oscillator)", type=input.bool, defval=false)
-sma_signal = input(title="Simple MA(Signal Line)", type=input.bool, defval=false)
+use pine::ast::string::StringNode;
+use pine::runtime::function::Function;
+use pine::syntax::{ParseValue, SyntaxParser};
 
-// Plot colors
-col_grow_above = #26A69A
-col_grow_below = #FFCDD2
-col_fall_above = #B2DFDB
-col_fall_below = #EF5350
-col_macd = #0094ff
-col_signal = #ff6a00
-pine_ema(src, length) =>
-    alpha = 2.0 / (length + 1)
-    sum=0.0
-    sum:= na(sum[1]) ? src : alpha * src + (1 - alpha) * nz(sum[1])
+struct MyCallback;
+impl Callback for MyCallback {}
 
-// Calculating
-fast_ma =  pine_ema(close, fast_length)
-slow_ma =  pine_ema(close, slow_length)
-mymacd = fast_ma - slow_ma
-signal = sma_signal ? sma(mymacd, signal_length) : pine_ema(mymacd, signal_length)
-hist = mymacd - signal
 
-plot(hist, title="Histogram", style=plot.style_columns, color=(hist>=0 ? (hist[1] < hist ? col_grow_above : col_fall_above) : (hist[1] < hist ? col_grow_below : col_fall_below) ), opacity=0 )
-plot(mymacd, title="MACD", color=col_macd, opacity=0)
-plot(signal, title="Signal", color=col_signal, opacity=0)
-"#;
-fn main() {
-
-    let lib_info = LibInfo::new(
-        vec![declare_ema_var(), declare_rma_var()],
-        vec![("close", SyntaxType::float_series())],
-    );
-    let src = "m1 = ema(close, 3)\n";
-    let blk = PineParser::new(src, &lib_info).parse_blk().unwrap();
-    let mut runner = PineRunner::new(&lib_info, &blk, &NoneCallback());
-
-    runner
-        .run(
-            &vec![(
-                "close",
-                AnySeries::from_float_vec(vec![Some(1f64)
-                                               , Some(2f64), Some(3f64)
-                                               , Some(4f64), Some(5f64), Some(6f64)
-                                               , Some(7f64), Some(8f64), Some(9f64),
-                ]
-                ),
-            )],
-            None,
-        )
-        .unwrap();
-
+fn parse_ast(in_str: &str) -> Result<Block, (Option<Block>, Vec<PineInputError>)> {
+    let input = Input::new(in_str, Position::new(0, 0), Position::max());
+    let state = AstState::new();
+    match block(input.clone(), &state) {
+        Ok((input, parsed)) => {
+            if input.len() != 0 {
+                state.catch(PineInputError::new(
+                    PineErrorKind::NonRecongnizeStmt,
+                    StrRange::new(
+                        input.start,
+                        Position::new(input.start.get_line(), std::u32::MAX),
+                    ),
+                ));
+            }
+            if state.is_ok() {
+                Ok(parsed)
+            } else {
+                Err((Some(parsed), state.into_inner()))
+            }
+        }
+        Err(Err::Error(pine_error)) => {
+            state.merge_pine_error(pine_error);
+            Err((None, state.into_inner()))
+        }
+        _ => {
+            state.catch(PineInputError::new(
+                PineErrorKind::UnknownErr,
+                StrRange::new(Position::new(0, 0), Position::max()),
+            ));
+            Err((None, state.into_inner()))
+        }
+    }
+}
+const TEXT_WITH_COMMENT: &str = "//@version=4
+study(\"Test\")
+// This line is a comment
+a = close // This is also a comment
+plot(a)
+";
+#[test]
+fn comment_test() {
+    let b=pine::parse_ast(TEXT_WITH_COMMENT);
+    println!("{:?}",b);
     assert_eq!(
-        runner.get_context().move_var(VarIndex::new(0, 0)),
-        Some(PineRef::new(Series::from_vec(vec![
-           // Some(0.5), Some(1.25), Some(2.125), Some(3.0625), Some(4.03125), Some(5.015625), Some(6.0078125), Some(7.00390625), Some(8.001953125)
-            Some(1.0), Some(1.5), Some(2.25), Some(3.125), Some(4.0625), Some(5.03125), Some(6.015625), Some(7.0078125), Some(8.00390625)
-        ])))
-    );
-   let a= runner.get_context().move_var(VarIndex::new(0, 0));
+        pine::parse_ast(TEXT_WITH_COMMENT),
+        Ok(Block::new(
+            vec![
+                // Statement::None(StrRange::from_start("//@version=4\n", Position::new(0, 0))),
+                Statement::Exp(Exp::FuncCall(Box::new(FunctionCall::new_no_ctxid(
+                    Exp::VarName(RVVarName::new_with_start("study", Position::new(1, 0))),
+                    vec![Exp::Str(StringNode::new(
+                        String::from("Test"),
+                        StrRange::from_start("Test", Position::new(1, 7))
+                    ))],
+                    vec![],
+                    StrRange::from_start("study(\"Test\")", Position::new(1, 0))
+                )))),
+                // Statement::None(StrRange::from_start(
+                //     "// This line is a comment\n",
+                //     Position::new(2, 0)
+                // )),
+                Statement::Assignment(Box::new(Assignment::new(
+                    vec![VarName::new_with_start("a", Position::new(3, 0))],
+                    Exp::VarName(RVVarName::new_with_start("close", Position::new(3, 4))),
+                    false,
+                    None,
+                    StrRange::from_start("a = close", Position::new(3, 0))
+                ))),
+                Statement::Exp(Exp::FuncCall(Box::new(FunctionCall::new_no_ctxid(
+                    Exp::VarName(RVVarName::new_with_start("plot", Position::new(4, 0))),
+                    vec![Exp::VarName(RVVarName::new_with_start(
+                        "a",
+                        Position::new(4, 5)
+                    ))],
+                    vec![],
+                    StrRange::from_start("plot(a)", Position::new(4, 0))
+                ))))
+            ],
+            None,
+            StrRange::new(Position::new(1, 0), Position::new(4, 7))
+        ))
+    )
+}
 
-   // println!("{:?}3333",a);
+fn main() {
+    const MACD_SCRIPT: &str = r#"
+a= if 1
+    2
+   else
+    4
+b=for i=1 to 2
+    i
+c=3
+myfun(x,y)=>x+y
+myfun(1,2)
+myfun(2,2)
+myfun(5,2)
 
-//
-//     use ta::indicators::ExponentialMovingAverage;
-//     use ta::Next;
-//
-// // it can return an error, when an invalid length is passed (e.g. 0)
-//     let mut ema = ExponentialMovingAverage::new(3).unwrap();
-//
-//     assert_eq!(ema.next(1.0), 1.0);
-//     assert_eq!(ema.next(2.0), 1.5);
-//     assert_eq!(ema.next(3.0), 2.25);
-//     assert_eq!(ema.next(4.0), 3.125);
-    //let ema1 = series_ema(close, fastlen, &mut self.ema1s)?;
-// EMA of length=3
-    let mut ema = EMA::new(3, &1f64).unwrap();
+"#;
+   const BLOCK: &str = "a = if 1\n    2\nelse\n    4\nb = for i = 1 to 2\n    i\nmyfun(x, y) => x + y\nmyfun(1, 2)\nmyfun(1, 2)";
 
+    let mut parser = SyntaxParser::new();
 
-
-    println!("{}--2", ema.next(&2.0));
-    println!("{}--3", ema.next(&3.0));
-    println!("{}--4", ema.next(&4.0));
-    println!("{}--5", ema.next(&5.0));
-    // ema.next(&3.0);
-    // ema.next(&4.0);
-    // ema.next(&5.0);
-    //
-    // assert_eq!(ema.next(&6.0), 6.75);
-    // assert_eq!(ema.next(&7.0), 9.375);
+    let input = Input::new_with_str(BLOCK);
+    let myblk = block(input, &AstState::new());
+    let mut blk = myblk.unwrap().1;
+    parser.parse_blk(&mut blk);
     // assert_eq!(
-    //     runner.get_context().move_var(VarIndex::new(1, 0)),
-    //     Some(PineRef::new(Series::from_vec(vec![
-    //         None,
-    //         Some(5f64),
-    //         Some(12.5f64)
-    //     ])))
+    //     parser.parse_blk(&mut blk),
+    //     Ok(ParseValue::new_with_type(SyntaxType::Void))
     // );
+    println!("{},{},{}",blk.var_count,blk.subctx_count,blk.libfun_count);
+    println!("{:?}",blk.stmts);
+
+    let mut context = Context::new(None, ContextType::Normal);
+
+    fn test_func<'a>(
+        _context: &mut dyn Ctx<'a>,
+        mut h: Vec<Option<PineRef<'a>>>,
+        _type: FunctionType<'a>,
+    ) -> Result<PineRef<'a>, RuntimeErr> {
+        let arg1 = mem::replace(&mut h[0], None);
+        let callable = downcast_pf::<Function>(arg1.unwrap()).unwrap();
+        let names: Vec<_> = callable.get_def().params.iter().map(|s| s.value).collect();
+        assert_eq!(names, vec!["close"]);
+        // println!("start new context {:?}", callable.get_def());
+        let mut subctx = Box::new(Context::new(Some(_context), ContextType::FuncDefBlock));
+        subctx.init(
+            callable.get_var_count(),
+            callable.get_subctx_count(),
+            callable.get_libfun_count(),
+        );
+        let result = callable.call(
+            &mut *subctx,
+            vec![PineRef::new_rc(Series::from(Some(10f64)))],
+            vec![],
+            StrRange::new_empty(),
+        );
+        match result {
+            Ok(val) => Ok(val),
+            Err(e) => Err(e.code),
+        }
+    }
+
+    context.init(5, 0, 1);
+    context.init_vars(vec![
+        Some(PineRef::new_rc(Callable::new(Some(test_func), None))),
+        Some(PineRef::new_rc(Series::from(Some(1f64)))),
+        None,
+        None,
+        None,
+    ]);
+
+    let result = Runner::run(&blk, &mut context);
+    // println!("result {:?}", result);
+    assert!(result.is_ok());
+    assert_eq!(
+        context.move_var(VarIndex::new(4, 0)),
+        Some(PineRef::new_rc(Series::from(Some(21f64))))
+    );
 
 
+    // assert_eq!(blk.var_count, 3);
+    // assert_eq!(blk.subctx_count, 5);
+    // assert_eq!(blk.libfun_count, 0);
 }

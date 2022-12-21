@@ -8,10 +8,28 @@ pub struct StudyScript {
 }
 
 #[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
+pub struct IndicatorScript {
+    pub title: String,
+    pub shorttitle: Option<String>,
+    pub overlay: Option<bool>,
+    pub format: Option<String>,
+    pub precision: Option<i64>,
+    pub timeframe: Option<String>,
+    pub timeframe_gaps: Option<bool>,
+
+
+}
+
+#[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
 #[serde(tag = "type")]
 pub enum ScriptPurpose {
     Study(StudyScript),
+    Indicator(IndicatorScript),
 }
+
+
+
+
 
 #[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
 pub struct BoolInputInfo {

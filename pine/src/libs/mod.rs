@@ -14,6 +14,7 @@ pub mod cog;
 pub mod color;
 pub mod correlation;
 pub mod cos;
+pub mod cross;
 pub mod cum;
 pub mod display;
 pub mod dmi;
@@ -73,7 +74,7 @@ pub mod year;
 pub mod yloc;
 pub mod ta;
 pub mod math;
-
+pub mod tacross;
 
 
 use crate::ast::syntax_type::SyntaxType;

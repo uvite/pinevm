@@ -77,8 +77,9 @@ mod tests {
     use crate::ast::stat_expr_types::VarIndex;
     use crate::ast::syntax_type::FunctionType;
     use crate::runtime::context::{Context, ContextType as RunContextType, VarOperate};
-    use crate::types::{RuntimeErr, Series};
+    use crate::types::{EvaluateVal, RuntimeErr, Series};
     use std::mem;
+    use crate::Ctx;
 
     #[derive(Debug, Clone, PartialEq)]
     struct MyVal();

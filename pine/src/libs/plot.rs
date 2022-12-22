@@ -262,7 +262,7 @@ pub fn declare_var<'a>() -> VarResult<'a> {
 mod tests {
     use super::*;
     use crate::runtime::{AnySeries, NoneCallback};
-    use crate::{LibInfo, PineParser, PineRunner};
+    use crate::{LibInfo, PineParser, PineRunner,VarIndex};
 
     #[test]
     fn plot_const_num() {

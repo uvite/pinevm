@@ -612,15 +612,15 @@ mod tests {
     }
 
     fn from_bool<'a, D>(val: D) -> Result<RefData<Bool>, RuntimeErr>
-    where
-        D: PineType<'a> + 'a,
+        where
+            D: PineType<'a> + 'a,
     {
         Bool::implicity_from(PineRef::new(val))
     }
 
     fn ex_from_bool<'a, D>(val: D) -> Result<RefData<Bool>, RuntimeErr>
-    where
-        D: PineType<'a> + 'a,
+        where
+            D: PineType<'a> + 'a,
     {
         Bool::explicity_from(PineRef::new(val))
     }

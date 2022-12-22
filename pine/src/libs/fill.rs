@@ -166,8 +166,8 @@ pub fn declare_var<'a>() -> VarResult<'a> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::runtime::{AnySeries, NoneCallback};
-    use crate::{LibInfo, PineParser, PineRunner};
+    use crate::runtime::{AnySeries, NoneCallback, StrOptionsData};
+    use crate::{LibInfo, PineParser, PineRunner,VarIndex};
 
     #[test]
     fn fill_info_test() {

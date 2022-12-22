@@ -1,5 +1,7 @@
 use crate::types::{Bool, Color, Float, Int, PineFrom, PineRef, RefData, Series};
 
+
+
 pub fn pine_ref_to_bool<'a>(val: Option<PineRef<'a>>) -> Option<bool> {
     if val.is_none() {
         return None;

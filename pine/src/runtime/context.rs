@@ -983,7 +983,7 @@ pub trait StmtRunner<'a> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::types::{Int, PineFrom};
+    use crate::types::{Callable, Int, PineFrom};
 
     #[test]
     fn context_test() {

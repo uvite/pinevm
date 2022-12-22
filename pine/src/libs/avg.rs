@@ -93,10 +93,10 @@ pub fn declare_var<'a>() -> VarResult<'a> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ast::stat_expr_types::VarIndex;
+
     use crate::ast::syntax_type::SimpleSyntaxType;
     use crate::runtime::{AnySeries, NoneCallback, VarOperate};
-    use crate::{LibInfo, PineParser, PineRunner};
+    use crate::{LibInfo, PineParser, PineRunner,VarIndex};
 
     #[test]
     fn na_test() {

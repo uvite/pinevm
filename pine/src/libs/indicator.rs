@@ -1,12 +1,15 @@
-use super::VarResult;
+use std::rc::Rc;
+
 use crate::ast::syntax_type::{FunctionType, FunctionTypes, SyntaxType};
+use crate::helper::{move_element, pine_ref_to_bool, pine_ref_to_i64, pine_ref_to_string};
 use crate::helper::err_msgs::*;
 use crate::helper::str_replace;
-use crate::helper::{move_element, pine_ref_to_bool, pine_ref_to_i64, pine_ref_to_string};
-use crate::runtime::context::{downcast_ctx, Ctx};
-use crate::runtime::{ScriptPurpose, IndicatorScript};
-use crate::types::{Callable, CallableFactory, PineRef, RuntimeErr, NA};
-use std::rc::Rc;
+use crate::runtime::{IndicatorScript, ScriptPurpose};
+use crate::runtime::context::{Ctx, downcast_ctx};
+use crate::types::{Callable, CallableFactory, NA, PineRef, RuntimeErr};
+
+use super::VarResult;
+
 /**
 title (const string) 脚本标题。当没有使用`shorttitle`参数时，它会显示在图表上，并在发布脚本时成为出版物的默认标题。
 shorttitle (const string) 脚本在图表上的显示名称。如果指定，它将替换大多数图表相关窗口中的`title`参数。可选。默认值是用于`title`的参数。
@@ -19,7 +22,7 @@ precision (const int) 指定脚本显示值的浮点数之后的位数。必须�
 indicator(title, shorttitle, overlay, format, precision,
 scale, max_bars_back, timeframe, timeframe_gaps,
 explicit_plot_zorder, max_lines_count, max_labels_count, max_boxes_count)
-**/
+ **/
 
 
 fn indicator<'a>(
@@ -64,7 +67,6 @@ pub fn declare_var<'a>() -> VarResult<'a> {
             ("precision", SyntaxType::int()),
             ("timeframe", SyntaxType::string()),
             ("timeframe_gaps", SyntaxType::bool()),
-
         ],
         SyntaxType::Void,
     ))]);
@@ -74,10 +76,11 @@ pub fn declare_var<'a>() -> VarResult<'a> {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use crate::{LibInfo, PineParser, PineRunner, VarIndex};
     use crate::ast::syntax_type::SimpleSyntaxType;
     use crate::runtime::{AnySeries, NoneCallback};
-    use crate::{LibInfo, PineParser, PineRunner};
+
+    use super::*;
 
     #[test]
     fn plotbar_info_test() {
@@ -104,9 +107,11 @@ mod tests {
             &Some(ScriptPurpose::Indicator(IndicatorScript {
                 title: String::from("hello"),
                 shorttitle: Some(String::from("dd")),
+                timeframe: Option::from(String::from("hello")),
                 overlay: Some(true),
                 format: Some(String::from("price")),
-                precision: Some(2)
+                precision: Some(2),
+                timeframe_gaps: Some(true),
             }))
         );
     }

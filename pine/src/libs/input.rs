@@ -539,7 +539,7 @@ mod tests {
     use super::*;
     use crate::ast::stat_expr_types::VarIndex;
     use crate::runtime::{AnySeries, NoneCallback, VarOperate};
-    use crate::types::PineRef;
+    use crate::types::{PineRef, Series};
     use crate::{LibInfo, PineParser, PineRunner};
 
     #[test]

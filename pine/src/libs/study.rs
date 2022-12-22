@@ -58,7 +58,7 @@ mod tests {
     use super::*;
     use crate::ast::syntax_type::SimpleSyntaxType;
     use crate::runtime::{AnySeries, NoneCallback};
-    use crate::{LibInfo, PineParser, PineRunner};
+    use crate::{LibInfo, PineParser, PineRunner,VarIndex};
 
     #[test]
     fn plotbar_info_test() {

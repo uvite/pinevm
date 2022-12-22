@@ -121,7 +121,7 @@ mod tests {
     use crate::runtime::context::VarOperate;
     use crate::runtime::{AnySeries, NoneCallback};
     use crate::types::{downcast_pf, Tuple};
-    use crate::{LibInfo, PineParser, PineRunner};
+    use crate::{LibInfo, PineParser, PineRunner, SimpleSyntaxType};
 
     #[test]
     fn plot_const_num() {

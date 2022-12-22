@@ -82,7 +82,7 @@ async fn main() {
     //         fake.push(i.to_f64());
     //     }
 
-    let mut f = File::open("./pine/test.ps").unwrap();
+    let mut f = File::open("./pine/jma.ps").unwrap();
     let mut buffer = String::new();
     f.read_to_string(&mut buffer).unwrap();
    // println!("SMA: {:?}", buffer);

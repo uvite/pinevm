@@ -122,9 +122,8 @@ mod tests {
     use super::*;
     use crate::ast::input::{Position, StrRange};
     use crate::ast::name::VarName;
-    use crate::ast::stat_expr_types::{
-        Assignment, DataType, RVVarName, RefCall, TypeCast, VarAssignment,
-    };
+    use crate::ast::stat_expr_types::{Assignment, DataType, RVVarName, RefCall, TypeCast, VarAssignment, FunctionDef};
+    use crate::VarIndex;
 
     fn name<'a>(n: &'a str) -> Exp<'a> {
         Exp::VarName(RVVarName::new_with_start(n, Position::new(0, 0)))

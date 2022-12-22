@@ -145,7 +145,7 @@ mod tests {
     use crate::runtime::VarOperate;
     use crate::runtime::{AnySeries, NoneCallback};
     use crate::types::Series;
-    use crate::{LibInfo, PineParser, PineRunner};
+    use crate::{LibInfo, PineParser, PineRunner,VarIndex};
 
     #[test]
     fn accdist_test() {

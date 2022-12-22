@@ -177,12 +177,13 @@ mod tests {
     use super::*;
     use crate::runtime::context::VarOperate;
     use crate::runtime::{AnySeries, NoneCallback, SymbolInfo};
-    use crate::{LibInfo, PineParser, PineRunner};
+    use crate::{LibInfo, PineParser, PineRunner, SimpleSyntaxType};
     use chrono::offset::TimeZone;
     use std::mem;
 
+
     fn gen_ts(h: u32, m: u32) -> i64 {
-        Tz::Asia__Shanghai
+        chrono_tz::Tz::Asia__Shanghai
             .ymd(2020, 2, 17)
             .and_hms(h, m, 0)
             .timestamp()

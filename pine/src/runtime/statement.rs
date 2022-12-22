@@ -774,7 +774,7 @@ mod tests {
     use crate::runtime::context::Context;
     use crate::runtime::exp::Exp;
     use crate::syntax::SyntaxParser;
-    use crate::types::{PineClass, RefData};
+    use crate::types::{CallableFactory, CallableObject, PineClass, RefData};
 
     #[test]
     fn assignment_test() {

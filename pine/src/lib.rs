@@ -785,12 +785,14 @@ mod tests {
                 vec![InputInfo::Int(IntInputInfo {
                     defval: Some(1),
                     title: Some(String::from("hello")),
-                    input_type: String::from("int"),
-                    confirm: None,
+                     confirm: None,
                     minval: None,
                     maxval: None,
                     step: None,
                     options: None,
+                    tooltip: None,
+                    inline: None,
+                    group: None
                 })],
                 vec![OutputInfo::Plot(PlotInfo {
                     title: None,

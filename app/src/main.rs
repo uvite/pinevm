@@ -108,82 +108,11 @@ fn comment_test() {
 }
 
 fn main() {
-    const MACD_SCRIPT: &str = r#"
-a= if 1
-    2
-   else
-    4
-b=for i=1 to 2
-    i
-c=3
-myfun(x,y)=>x+y
-myfun(1,2)
-myfun(2,2)
-myfun(5,2)
+    let a=vec![1,2,3,4];
+    let b=vec![5,6,7,8];
 
-"#;
-   const BLOCK: &str = "a = if 1\n    2\nelse\n    4\nb = for i = 1 to 2\n    i\nmyfun(x, y) => x + y\nmyfun(1, 2)\nmyfun(1, 2)";
-
-    let mut parser = SyntaxParser::new();
-
-    let input = Input::new_with_str(BLOCK);
-    let myblk = block(input, &AstState::new());
-    let mut blk = myblk.unwrap().1;
-    parser.parse_blk(&mut blk);
-    // assert_eq!(
-    //     parser.parse_blk(&mut blk),
-    //     Ok(ParseValue::new_with_type(SyntaxType::Void))
-    // );
-    println!("{},{},{}",blk.var_count,blk.subctx_count,blk.libfun_count);
-    println!("{:?}",blk.stmts);
-
-    let mut context = Context::new(None, ContextType::Normal);
-
-    fn test_func<'a>(
-        _context: &mut dyn Ctx<'a>,
-        mut h: Vec<Option<PineRef<'a>>>,
-        _type: FunctionType<'a>,
-    ) -> Result<PineRef<'a>, RuntimeErr> {
-        let arg1 = mem::replace(&mut h[0], None);
-        let callable = downcast_pf::<Function>(arg1.unwrap()).unwrap();
-        let names: Vec<_> = callable.get_def().params.iter().map(|s| s.value).collect();
-        assert_eq!(names, vec!["close"]);
-        // println!("start new context {:?}", callable.get_def());
-        let mut subctx = Box::new(Context::new(Some(_context), ContextType::FuncDefBlock));
-        subctx.init(
-            callable.get_var_count(),
-            callable.get_subctx_count(),
-            callable.get_libfun_count(),
-        );
-        let result = callable.call(
-            &mut *subctx,
-            vec![PineRef::new_rc(Series::from(Some(10f64)))],
-            vec![],
-            StrRange::new_empty(),
-        );
-        match result {
-            Ok(val) => Ok(val),
-            Err(e) => Err(e.code),
-        }
-    }
-
-    context.init(5, 0, 1);
-    context.init_vars(vec![
-        Some(PineRef::new_rc(Callable::new(Some(test_func), None))),
-        Some(PineRef::new_rc(Series::from(Some(1f64)))),
-        None,
-        None,
-        None,
-    ]);
-
-    let result = Runner::run(&blk, &mut context);
-    // println!("result {:?}", result);
-    assert!(result.is_ok());
-    assert_eq!(
-        context.move_var(VarIndex::new(4, 0)),
-        Some(PineRef::new_rc(Series::from(Some(21f64))))
-    );
-
+    let c=b.into_iter().enumerate().for_each(|(i, x)| b.get(i)-a.get(i));
+    println!("{:?}",c)
 
     // assert_eq!(blk.var_count, 3);
     // assert_eq!(blk.subctx_count, 5);

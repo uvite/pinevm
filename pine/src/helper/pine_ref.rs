@@ -22,6 +22,8 @@ pub fn pine_ref_to_string<'a>(val: Option<PineRef<'a>>) -> Option<String> {
     }
 }
 
+
+
 pub fn pine_ref_to_color<'a>(val: Option<PineRef<'a>>) -> Option<String> {
     if val.is_none() {
         return None;

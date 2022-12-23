@@ -2,9 +2,9 @@
 study(title="MACD", shorttitle="MACD")
 //@version=5
 indicator(title="DMI + ADX with EMA", shorttitle="DAMA",  precision=4, timeframe=" ", timeframe_gaps=true)
-lensig = input.int(14, title="ADX Smoothing")
+lensig = 14
 
-len = input(14, minval=1, title="DI Length")
+len = 14
 
 up = ta.change(high)
 down = -ta.change(low)

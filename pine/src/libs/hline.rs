@@ -76,6 +76,8 @@ impl<'a> PineClass<'a> for PlotProps {
             "style_dashed" => Ok(PineRef::new_rc(String::from("dashed"))),
             "style_dotted" => Ok(PineRef::new_rc(String::from("dotted"))),
             "style_solid" => Ok(PineRef::new_rc(String::from("solid"))),
+            "display_none" => Ok(PineRef::new_rc(String::from("none"))),
+            "display_all" => Ok(PineRef::new_rc(String::from("all"))),
             _ => Err(RuntimeErr::NotImplement(str_replace(
                 NO_FIELD_IN_OBJECT,
                 vec![String::from(name), String::from("hline")],
@@ -103,6 +105,7 @@ pub fn declare_var<'a>() -> VarResult<'a> {
             ("linestyle", SyntaxType::string()),
             ("linewidth", SyntaxType::int()),
             ("editable", SyntaxType::bool()),
+            ("display", SyntaxType::string()),
         ],
         SyntaxType::ObjectClass("hline"),
     ))]);
@@ -110,6 +113,8 @@ pub fn declare_var<'a>() -> VarResult<'a> {
     obj_type.insert("style_dashed", SyntaxType::string());
     obj_type.insert("style_dotted", SyntaxType::string());
     obj_type.insert("style_solid", SyntaxType::string());
+    obj_type.insert("display_none", SyntaxType::string());
+    obj_type.insert("display_all", SyntaxType::string());
     let syntax_type = SyntaxType::ObjectFunction(Rc::new(obj_type), Rc::new(func_type));
     VarResult::new(value, syntax_type, VAR_NAME)
 }

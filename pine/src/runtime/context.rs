@@ -413,8 +413,13 @@ impl<'a, 'b, 'c> Context<'a, 'b, 'c> {
     }
 
     pub fn push_input_info(&mut self, input: InputInfo) {
+
+
         if self.context_type == ContextType::Main {
+            println!("44444{:?}",input);
             self.io_info.push_input(input);
+            println!("5555{:?}",self.get_inputs());
+
         } else if let Some(p) = &mut self.parent {
             downcast_ctx(*p).push_input_info(input)
         } else {

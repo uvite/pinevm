@@ -9,28 +9,13 @@ use crate::runtime::context::{Ctx, downcast_ctx};
 use crate::types::{Callable, CallableFactory, NA, PineRef, RuntimeErr};
 
 use super::VarResult;
-
-/**
-title (const string) 脚本标题。当没有使用`shorttitle`参数时，它会显示在图表上，并在发布脚本时成为出版物的默认标题。
-shorttitle (const string) 脚本在图表上的显示名称。如果指定，它将替换大多数图表相关窗口中的`title`参数。可选。默认值是用于`title`的参数。
-overlay (const bool) 如果true，指标将显示在图表上方。如果false，它将被添加到单独的窗格中。可选。默认值为false。
-format (const string) 指定脚本显示值的格式。可能的值：format.inherit、format.price、format.volume。可选。默认值为format.inherit。
-precision (const int) 指定脚本显示值的浮点数之后的位数。必须是不大于16的非负整数。如果`format`设置为format.inherit并指定了`precision`，则格式将改为设置为format.price。可选。默认值继承自图表商品的精度。
-
-
-
-indicator(title, shorttitle, overlay, format, precision,
-scale, max_bars_back, timeframe, timeframe_gaps,
-explicit_plot_zorder, max_lines_count, max_labels_count, max_boxes_count)
- **/
-
-
+ 
 fn indicator<'a>(
     context: &mut dyn Ctx<'a>,
     mut param: Vec<Option<PineRef<'a>>>,
     _func_type: FunctionType<'a>,
 ) -> Result<PineRef<'a>, RuntimeErr> {
-    move_tuplet!((title, shorttitle, overlay, format, precision,timeframe,timeframe_gaps) = param);
+    move_tuplet!((title, shorttitle, overlay, format, precision, scale, max_bars_back, timeframe, timeframe_gaps, explicit_plot_zorder, max_lines_count, max_labels_count, max_boxes_count) = param);
     if !downcast_ctx(context).check_is_input_info_ready() {
         if let Some(title) = pine_ref_to_string(title) {
             let indicator = IndicatorScript {
@@ -39,8 +24,14 @@ fn indicator<'a>(
                 overlay: pine_ref_to_bool(overlay),
                 format: pine_ref_to_string(format),
                 precision: pine_ref_to_i64(precision),
+                scale: pine_ref_to_string(scale),
+                max_bars_back:pine_ref_to_i64(max_bars_back),
                 timeframe: pine_ref_to_string(timeframe),
                 timeframe_gaps: pine_ref_to_bool(timeframe_gaps),
+                explicit_plot_zorder: pine_ref_to_bool(explicit_plot_zorder),
+                max_lines_count: pine_ref_to_i64(max_lines_count),
+                max_labels_count: pine_ref_to_i64(max_labels_count),
+                max_boxes_count: pine_ref_to_i64(max_boxes_count),
             };
             downcast_ctx(context).set_script_type(ScriptPurpose::Indicator(indicator));
         } else {
@@ -57,7 +48,6 @@ pub const VAR_NAME: &'static str = "indicator";
 
 pub fn declare_var<'a>() -> VarResult<'a> {
     let value = PineRef::new(CallableFactory::new(|| Callable::new(Some(indicator), None)));
-
     let func_type = FunctionTypes(vec![FunctionType::new((
         vec![
             ("title", SyntaxType::string()),
@@ -65,11 +55,18 @@ pub fn declare_var<'a>() -> VarResult<'a> {
             ("overlay", SyntaxType::bool()),
             ("format", SyntaxType::string()),
             ("precision", SyntaxType::int()),
+            ("scale", SyntaxType::string()),
+            ("max_bars_back", SyntaxType::int()),
             ("timeframe", SyntaxType::string()),
             ("timeframe_gaps", SyntaxType::bool()),
+            ("explicit_plot_zorder", SyntaxType::bool()),
+            ("max_lines_count", SyntaxType::int()),
+            ("max_labels_count", SyntaxType::int()),
+            ("max_boxes_count", SyntaxType::int()),
         ],
         SyntaxType::Void,
     ))]);
+
     let syntax_type = SyntaxType::Function(Rc::new(func_type));
     VarResult::new(value, syntax_type, VAR_NAME)
 }
@@ -107,11 +104,19 @@ mod tests {
             &Some(ScriptPurpose::Indicator(IndicatorScript {
                 title: String::from("hello"),
                 shorttitle: Some(String::from("dd")),
-                timeframe: Option::from(String::from("hello")),
+              
                 overlay: Some(true),
                 format: Some(String::from("price")),
                 precision: Some(2),
-                timeframe_gaps: Some(true),
+                scale: None,
+              
+                explicit_plot_zorder: None,
+                max_lines_count: None,
+                max_labels_count: None,
+                max_bars_back: None,
+                timeframe: None,
+                max_boxes_count: None,
+                timeframe_gaps: None
             }))
         );
     }

@@ -60,7 +60,9 @@ impl<'a> SeriesCall<'a> for PlotVal {
         _func_type: FunctionType<'a>,
     ) -> Result<PineRef<'a>, RuntimeErr> {
         if self.output_id < 0 && !downcast_ctx(context).check_is_output_info_ready() {
-            move_tuplet!((plot1, plot2, color, opacity, title, editable, show_last) = p);
+            println!("{:?}",p);
+
+            move_tuplet!((plot1, plot2, color,opacity,title,editable, show_last ,fillgaps,display ,top_value, bottom_value, top_color, bottom_color) = p);
             let names = match _func_type.get_type(0) {
                 Some(&SyntaxType::ObjectClass("plot")) => ("plot", "plot1", "plot2"),
                 Some(&SyntaxType::ObjectClass("hline")) => ("hline", "hline1", "hline2"),
@@ -108,7 +110,6 @@ pub fn declare_var<'a>() -> VarResult<'a> {
             )))),
         )
     }));
-
     let func_type = FunctionTypes(vec![
         FunctionType::new((
             vec![
@@ -119,21 +120,36 @@ pub fn declare_var<'a>() -> VarResult<'a> {
                 ("title", SyntaxType::string()),
                 ("editable", SyntaxType::bool()),
                 ("show_last", SyntaxType::int()),
+                ("fillgaps", SyntaxType::bool()),
+                ("display", SyntaxType::string()),
+                ("top_value", SyntaxType::int()),
+                ("bottom_value", SyntaxType::int()),
+                ("top_color", SyntaxType::Simple(SimpleSyntaxType::Color)),
+                ("bottom_color", SyntaxType::Simple(SimpleSyntaxType::Color)),
             ],
             SyntaxType::Void,
         )),
+
         FunctionType::new((
             vec![
                 ("plot1", SyntaxType::ObjectClass("plot")),
                 ("plot2", SyntaxType::ObjectClass("plot")),
-                ("color", SyntaxType::Series(SimpleSyntaxType::Color)),
+                ("color", SyntaxType::Simple(SimpleSyntaxType::Color)),
                 ("opacity", SyntaxType::int()),
                 ("title", SyntaxType::string()),
                 ("editable", SyntaxType::bool()),
                 ("show_last", SyntaxType::int()),
+                ("fillgaps", SyntaxType::bool()),
+                ("display", SyntaxType::string()),
+                ("top_value", SyntaxType::float()),
+                ("bottom_value", SyntaxType::float()),
+                ("top_color", SyntaxType::Simple(SimpleSyntaxType::Color)),
+                ("bottom_color", SyntaxType::Simple(SimpleSyntaxType::Color)),
             ],
             SyntaxType::Void,
         )),
+
+
         FunctionType::new((
             vec![
                 ("hline1", SyntaxType::ObjectClass("hline")),
@@ -143,21 +159,36 @@ pub fn declare_var<'a>() -> VarResult<'a> {
                 ("title", SyntaxType::string()),
                 ("editable", SyntaxType::bool()),
                 ("show_last", SyntaxType::int()),
+                ("fillgaps", SyntaxType::bool()),
+                ("display", SyntaxType::string()),
+                ("top_value", SyntaxType::int()),
+                ("bottom_value", SyntaxType::int()),
+                ("top_color", SyntaxType::Simple(SimpleSyntaxType::Color)),
+                ("bottom_color", SyntaxType::Simple(SimpleSyntaxType::Color)),
             ],
             SyntaxType::Void,
         )),
+
         FunctionType::new((
             vec![
                 ("hline1", SyntaxType::ObjectClass("hline")),
                 ("hline2", SyntaxType::ObjectClass("hline")),
-                ("color", SyntaxType::Series(SimpleSyntaxType::Color)),
+                ("color", SyntaxType::Simple(SimpleSyntaxType::Color)),
                 ("opacity", SyntaxType::int()),
                 ("title", SyntaxType::string()),
                 ("editable", SyntaxType::bool()),
                 ("show_last", SyntaxType::int()),
+                ("fillgaps", SyntaxType::bool()),
+                ("display", SyntaxType::string()),
+                ("top_value", SyntaxType::float()),
+                ("bottom_value", SyntaxType::float()),
+                ("top_color", SyntaxType::Simple(SimpleSyntaxType::Color)),
+                ("bottom_color", SyntaxType::Simple(SimpleSyntaxType::Color)),
             ],
             SyntaxType::Void,
         )),
+
+
     ]);
     let syntax_type = SyntaxType::Function(Rc::new(func_type));
     VarResult::new(value, syntax_type, VAR_NAME)

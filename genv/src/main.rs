@@ -42,7 +42,7 @@ fn ema1(len: i64) {
 }
 #[tokio::main]
 async fn main() {
-    let length = 88;
+    let length = 5;
     // ema1(length);
     // let client = utils::get_client();
     // let result = binance::get_klines(client.clone(), "30m", "ETHUSDT", 500).await;
@@ -82,13 +82,15 @@ async fn main() {
     //         fake.push(i.to_f64());
     //     }
 
-    let mut f = File::open("./pine/jma.ps").unwrap();
+    let mut f = File::open("./pine/adx.ps").unwrap();
     let mut buffer = String::new();
     f.read_to_string(&mut buffer).unwrap();
-   // println!("SMA: {:?}", buffer);
+    let mut bb=buffer.replace("\"\"", "\" \"");
 
 
-    let out_data = vm::runcode(buffer, vec![Some(InputVal::Int(length))], &closes,&highs,&lows);
+
+
+    let out_data = vm::runcode(bb, vec![Some(InputVal::Int(length))], &closes,&highs,&lows);
     println!("SMA: {:?}", out_data);
     //println!("sma data {:?}", out_data.as_ref().unwrap().data_list);
     //

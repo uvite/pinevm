@@ -2,7 +2,7 @@ use super::VarResult;
 use crate::ast::syntax_type::{FunctionType, FunctionTypes, SyntaxType};
 
 
-use crate::helper::{check_ge1_i64, move_element, pine_ref_to_f64_series, pine_ref_to_i64, require_param, series_index, series_index2};
+use crate::helper::{check_ge1_i64, move_element, pine_ref_to_f64, pine_ref_to_f64_series, pine_ref_to_i64, require_param, series_index, series_index2};
 use crate::runtime::context::{Ctx};
 use crate::types::{Arithmetic, Callable, CallableFactory, Float, ParamCollectCall, PineRef, RefData, RuntimeErr, Series};
 
@@ -20,6 +20,15 @@ fn series_minus(
     result
 }
 
+// pub fn series_s<'a>(
+//     src: Option<f64>,
+//
+// ) -> Float {
+//
+//     Some(src)
+//
+// }
+
 
 fn cross_func<'a>(
     _context: &mut dyn Ctx<'a>,
@@ -31,15 +40,15 @@ fn cross_func<'a>(
 
     match _func_type.get_type(1) {
         _ => {
-            let s1 = pine_ref_to_f64_series(x.clone());
-            let s2 = pine_ref_to_f64_series(y.clone());
-            let zero = series_minus(&s1, &s2, 0);
-            let one = series_minus(&s1, &s2, 1);
 
+            let s1 =  pine_ref_to_f64(x.clone());
+            let s2 =  pine_ref_to_f64(y.clone());
+            // todo 没有处理
+            // let dif = s1.minus(s2);
+            // let dif1=Series::from(dif);
+            // println!("{:?}",dif1.at(1));
 
-            let res = zero.gt(&Some(0f64)) && one.lt(&Some(0f64));
-
-            Ok(PineRef::new_box(res))
+            Ok(PineRef::new_box(false))
 
             //Ok(PineRef::new_box(pine_ref_to_bool(result)));
 
@@ -102,7 +111,7 @@ fn crossunder_func<'a>(
     }
 }
 
-fn declare_crossover_var<'a>() -> VarResult<'a> {
+pub fn declare_crossover_var<'a>() -> VarResult<'a> {
     let value = PineRef::new(CallableFactory::new(|| {
         Callable::new(
             None,
@@ -126,7 +135,7 @@ fn declare_crossover_var<'a>() -> VarResult<'a> {
     let syntax_type = SyntaxType::Function(Rc::new(func_type));
     VarResult::new(value, syntax_type, "crossover")
 }
-fn declare_crossunder_var<'a>() -> VarResult<'a> {
+pub fn declare_crossunder_var<'a>() -> VarResult<'a> {
     let value = PineRef::new(CallableFactory::new(|| {
         Callable::new(
             None,
@@ -153,7 +162,8 @@ fn declare_crossunder_var<'a>() -> VarResult<'a> {
 
 
 
-fn declare_cross_var<'a>() -> VarResult<'a> {
+
+pub fn declare_cross_var<'a>() -> VarResult<'a> {
     let value = PineRef::new(CallableFactory::new(|| {
         Callable::new(
             None,
@@ -193,10 +203,10 @@ mod tests {
     #[test]
     fn rsi_int_test() {
         let lib_info = LibInfo::new(
-            vec![declare_crossover_var(),declare_crossunder_var()],
+            vec![declare_crossover_var(),declare_crossunder_var(),declare_cross_var()],
             vec![("close", SyntaxType::float_series()),("high", SyntaxType::float_series())],
         );
-        let src = "m = crossover(close, high)\nm2 =crossunder(close,high)";
+        let src = "m = cross(close, high)\n";
         let blk = PineParser::new(src, &lib_info).parse_blk().unwrap();
         let mut runner = PineRunner::new(&lib_info, &blk, &NoneCallback());
 
@@ -204,10 +214,10 @@ mod tests {
             .run(
                 &vec![(
                           "close",
-                          AnySeries::from_float_vec(vec![Some(36f64), Some(10f64)]),
+                          AnySeries::from_float_vec(vec![Some(2f64),Some(4f64),Some(6f64), Some(8f64)]),
                       ),(
                           "high",
-                          AnySeries::from_float_vec(vec![Some(35f64), Some(25f64)]),
+                          AnySeries::from_float_vec(vec![Some(10f64), Some(12f64),Some(14f64), Some(16f64)]),
                       )],
                 None,
             )
@@ -216,8 +226,8 @@ mod tests {
         //println!("{:?}",runner.get_context().move_var(VarIndex::new(0, 0)));
 
         assert_eq!(
-            runner.get_context().move_var(VarIndex::new(1, 0)),
-            Some(PineRef::new_box(true))
+            runner.get_context().move_var(VarIndex::new(0, 0)),
+            Some(PineRef::new_box(false))
         );
 
         // assert_eq!(

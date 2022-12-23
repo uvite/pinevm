@@ -14,9 +14,47 @@ pub struct IndicatorScript {
     pub overlay: Option<bool>,
     pub format: Option<String>,
     pub precision: Option<i64>,
+    pub scale: Option<String>,
+    pub max_bars_back: Option<i64>,
     pub timeframe: Option<String>,
     pub timeframe_gaps: Option<bool>,
+    pub explicit_plot_zorder: Option<bool>,
+    pub max_lines_count: Option<i64>,
+    pub max_labels_count: Option<i64>,
+    pub max_boxes_count: Option<i64>
+}
 
+
+#[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
+pub struct StrategyScript {
+    pub title: String,
+    pub shorttitle: Option<String>,
+    pub overlay: Option<bool>,
+    pub format: Option<String>,
+    pub precision: Option<i64>,
+    pub scale: Option<String>,
+    pub pyramiding: Option<i64>,
+    pub calc_on_order_fills: Option<bool>,
+    pub calc_on_every_tick: Option<bool>,
+    pub max_bars_back: Option<i64>,
+    pub backtest_fill_limits_assumption: Option<i64>,
+    pub default_qty_type: Option<String>,
+    pub default_qty_value: Option<i64>,
+    pub initial_capital: Option<i64>,
+    pub currency: Option<String>,
+    pub slippage: Option<i64>,
+    pub commission_type: Option<String>,
+    pub commission_value: Option<i64>,
+    pub process_orders_on_close: Option<bool>,
+    pub close_entries_rule: Option<String>,
+    pub max_lines_count: Option<i64>,
+    pub max_labels_count: Option<i64>,
+    pub max_boxes_count: Option<i64>,
+    pub margin_long: Option<i64>,
+    pub margin_short: Option<i64>,
+    pub explicit_plot_zorder: Option<bool>,
+    pub risk_free_rate: Option<i64>,
+    pub use_bar_magnifier: Option<bool>,
 
 }
 
@@ -25,6 +63,7 @@ pub struct IndicatorScript {
 pub enum ScriptPurpose {
     Study(StudyScript),
     Indicator(IndicatorScript),
+    Strategy(StrategyScript),
 }
 
 
@@ -35,31 +74,42 @@ pub enum ScriptPurpose {
 pub struct BoolInputInfo {
     pub defval: Option<bool>,
     pub title: Option<String>,
-    pub input_type: String,
+    pub tooltip: Option<String>,
+    pub inline: Option<String>,
+    pub group: Option<String>,
     pub confirm: Option<bool>,
 }
+
+
+
 
 #[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
 pub struct IntInputInfo {
     pub defval: Option<i64>,
     pub title: Option<String>,
-    pub input_type: String,
     pub minval: Option<i64>,
     pub maxval: Option<i64>,
-    pub confirm: Option<bool>,
     pub step: Option<i64>,
+    pub tooltip: Option<String>,
+    pub inline: Option<String>,
+    pub group: Option<String>,
+    pub confirm: Option<bool>,
     pub options: Option<Vec<i64>>,
 }
+
+//  input.int(defval, title, minval, maxval, step, tooltip, inline, group, confirm) → input int
 
 #[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
 pub struct FloatInputInfo {
     pub defval: Option<f64>,
     pub title: Option<String>,
-    pub input_type: String,
     pub minval: Option<f64>,
     pub maxval: Option<f64>,
-    pub confirm: Option<bool>,
     pub step: Option<f64>,
+    pub tooltip: Option<String>,
+    pub inline: Option<String>,
+    pub group: Option<String>,
+    pub confirm: Option<bool>,
     pub options: Option<Vec<f64>>,
 }
 
@@ -67,18 +117,25 @@ pub struct FloatInputInfo {
 pub struct StringInputInfo {
     pub defval: Option<String>,
     pub title: Option<String>,
-    pub input_type: String,
+    pub tooltip: Option<String>,
+    pub inline: Option<String>,
+    pub group: Option<String>,
     pub confirm: Option<bool>,
     pub options: Option<Vec<String>>,
+
 }
+
+
 
 #[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
 pub struct SourceInputInfo {
     pub defval: Option<String>,
     pub title: Option<String>,
-    pub input_type: String,
-}
+    pub tooltip: Option<String>,
+    pub inline: Option<String>,
+    pub group: Option<String>,
 
+}
 #[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
 #[serde(tag = "type")]
 pub enum InputInfo {
@@ -261,6 +318,9 @@ impl IOInfo {
 
     pub fn push_input(&mut self, input: InputInfo) {
         self.inputs.push(input);
+
+        println!("6666{:?}",self.get_inputs());
+        println!("777{:?}",self.inputs);
     }
 
     pub fn push_output(&mut self, output: OutputInfo) {

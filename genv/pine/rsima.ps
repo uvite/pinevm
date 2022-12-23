@@ -1,0 +1,68 @@
+// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © chervolino
+// This script is an advanced variant of the Onset Trend Detector, a technical indicator for trend analysis developed by John F. Ehlers.
+// It is based on a non-linear quotient transformation and expands upon Mr. Ehlers' previous studies, the Super Smoother Filter and the Roofing Filter,
+// to address the lag issue common to moving average type indicators.
+
+// The algorithm in this script registers the most recent peak value and normalizes it. The normalized value then decays slowly until the next
+// peak swing. The ratio of the previously filtered value to the corresponding peak value is then transformed using a quotient transformation to
+// provide the resulting oscillator.
+
+// This script implements an indicator called "The forbidden RSI" (TFRSI). This indicator was developed by chervolino as an improvement on the
+// standard Relative Strength Index (RSI), which is a technical indicator used to measure the strength of a trend and identify potential buy and sell signals.
+
+// The TFRSI is calculated based on the close price and is typically plotted on a scale from -20 to 120, with values above 100 indicating that
+// the asset is overbought (likely to decline in value) and values below 1 indicating that it is oversold (likely to increase in value). The script
+// allows the user to customize the length of the RSI and the length of the trigger used to smooth the signal.
+
+// In order to calculate the TFRSI, the script first initializes some constants and then performs a series of calculations to determine the value of
+// "HP", "ag", and "Sp". The RSI value is then calculated based on the values of "X", which is based on "ag" and "Sp", and "q1", which is based on "X"
+// and the trigger length. The RSI value is plotted in a chart along with upper and lower bounds and a filled region representing the background.
+
+// Please check it out, it works perfectly to find good analysis and entries for both, longs and shorts.
+
+// Best regards
+
+// Chervolino
+
+//@version=5
+indicator(title="The Forbidden RSI [CHE]", shorttitle=" TFRSI [CHE]", overlay=false, timeframe="")
+// ————— Inputs
+RSI_Length = input.int(6, title='RSI_Length')
+tr1 = input.int(2, 'Trigger Length')
+
+HP = 0.00
+a1 = 0.00
+b1 = 0.00
+c1 = 0.00
+c2 = 0.00
+c3 = 0.00
+ag = 0.00
+Sp = 0.00
+X = 0.00
+Quotient1 = 0.00
+Quotient2 = 0.00
+w = math.sqrt(.5)
+// ————— Calculations
+HP := 2500 * (close - 2 * nz(close[1]) + nz(close[2])) + 1.92 * nz(HP[1]) - .9216 * nz(HP[2])
+a1 := math.exp(-math.sqrt(2) * math.pi / RSI_Length)
+b1 := 2 * a1 * math.cos(math.sqrt(2) * math.pi / RSI_Length)
+c2 := b1
+c3 := -a1 * a1
+c1 := 1 - c2 - c3
+ag := c1 * (HP + nz(HP[1])) / 2 + c2 * nz(ag[1]) + c3 * nz(ag[2])
+Sp := .991 * nz(Sp[1])
+if math.abs(ag) > Sp
+    Sp := math.abs(ag)
+    Sp
+if Sp != 0
+    X := ag / Sp
+    X
+q1 = X * 60 + 50
+rsi= ta.sma(q1, tr1)
+// ————— Plots
+plot(rsi, "RSI", color=#7E57C2)
+rsiUpperBand = hline(100, "RSI Upper Band", color=#787B86)
+
+rsiLowerBand = hline(0, "RSI Lower Band", color=#787B86)
+fill(rsiUpperBand, rsiLowerBand, color=color.black, title="RSI Background Fill")

@@ -23,7 +23,7 @@ use std::fmt;
 use std::mem;
 use std::ops::Deref;
 use std::rc::Rc;
-use crate::libs::{accdist, alma, atr, bb, bbw, cci, change, cmo, cog, correlation, cum, dmi, ema, falling, highest, highestbars, hma, kc, kcw, lowest, lowestbars, macd, max, mfi, rising, rsi, sma, stoch, swma, tr, tsi, vwma};
+use crate::libs::{accdist, alma, atr, bb, bbw, cci, change, cmo, cog, correlation, cross, cum, dmi, ema, falling, highest, highestbars, hma, kc, kcw, lowest, lowestbars, macd, max, mfi, rising, rsi, sma, stoch, swma, tr, tsi, vwma};
 
 
 struct PlotProps;
@@ -50,6 +50,10 @@ impl<'a> PineClass<'a> for PlotProps {
             "cog" => Ok(cog::declare_var().value),
             "correlation" => Ok(correlation::declare_var().value),
             // todo cross crossover crossunder
+            "cross" => Ok(cross::declare_cross_var().value),
+            "crossover" => Ok(cross::declare_crossover_var().value),
+            "crossunder" => Ok(cross::declare_crossunder_var().value),
+
             "cum" => Ok(cum::declare_var().value),
 
             "dev" => Ok(sma::declare_dev_var().value),

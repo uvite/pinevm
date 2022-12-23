@@ -74,7 +74,8 @@ pub mod year;
 pub mod yloc;
 pub mod ta;
 pub mod math;
-pub mod tacross;
+pub mod strategy;
+pub mod scale;
 
 
 use crate::ast::syntax_type::SyntaxType;
@@ -213,6 +214,7 @@ pub fn declare_vars<'a>() -> Vec<VarResult<'a>> {
         size::declare_var(),
         text::declare_var(),
         ta::declare_var(),
+        strategy::declare_var(),
         math::declare_var(),
         display::declare_var(),
     ];

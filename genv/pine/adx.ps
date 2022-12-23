@@ -1,0 +1,30 @@
+//  TASC Issue: January 2023 - Vol. 41, Issue 1
+//     Article: TRAdj EMA - True Range Adjusted
+//              Exponential Moving Average
+//  Article By: Vitali Apirine
+//    Language: TradingView's Pine Script™ v5
+// Provided By: PineCoders, for tradingview.com
+
+//@version=5
+string title = 'TASC 2023.01 TRAdj EMA'
+string stitle = 'TRAdj EMA'
+indicator(title, stitle, true)
+
+Periods = input.int(40,       'MA Length:')
+Pds = input.int(40, 'Lookback Period:')
+Mltp = input.int(10,      'Multiplier:')
+
+TRAdjEMA (source,Periods,Pds,Mltp) =>
+    pds      = math.max(1, Pds)
+    Mltp1    = 2.0 / (Periods + 1.0)
+    HHV      = ta.highest(tr, pds)
+    LLV      = ta.lowest(ta.tr, pds)
+    TRAdj    = (tr - LLV) / (HHV - LLV)
+    Mltp2    = TRAdj * Mltp
+    Rate     = Mltp1 * (1.0 + Mltp2)
+    TRAdjEMA = na()
+
+    TRAdj
+
+ma = TRAdjEMA(close, Periods, Pds, Mltp)
+plot(ma, 'TRAdjEMA')
